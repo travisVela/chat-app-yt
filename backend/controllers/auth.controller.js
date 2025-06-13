@@ -4,8 +4,7 @@ import generateToken from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
   try {
-    const { fullName, username, password, confirmPassword, gender } = req.body;
-    console.log(req.body);
+    const { fullName, username, password, confirmPassword } = req.body;
 
     if (password != confirmPassword) {
       res.status(400).json({ error: "passwords do not match" });
@@ -28,7 +27,6 @@ export const signup = async (req, res) => {
       fullName,
       username,
       password: hashedPassword,
-      gender,
       profilePic,
     });
 
