@@ -16,7 +16,7 @@ const convoSchema = mongoose.Schema(
       },
     ],
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
 const Convo = mongoose.model("Convo", convoSchema);
