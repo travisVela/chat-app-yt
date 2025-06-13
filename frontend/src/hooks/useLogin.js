@@ -1,30 +1,28 @@
-import React, { useState } from "react";
-import { handleSignupInputErrors } from "../lib/util";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { useAuthContext } from "../context/AuthContext";
+import { handleLoginInputErrors } from "../lib/util";
 
-const useSignup = () => {
+const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const { setAuthUser } = useAuthContext();
 
-  const signup = async ({ fullName, username, password, confirmPassword }) => {
-    const newUser = { fullName, username, password, confirmPassword };
-    const success = handleSignupInputErrors({
-      fullName,
-      username,
-      password,
-      confirmPassword,
-    });
+  const login = async (username, password) => {
+    const userLogin = { username, password };
+    const success = handleLoginInputErrors(username, password);
+
     if (!success) return;
 
+    setLoading(true);
     try {
-      setLoading(true);
-      const res = await fetch("/api/auth/signup", {
+      const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newUser),
+        body: JSON.stringify(userLogin),
       });
+
       const data = await res.json();
+      console.log(data);
 
       if (data.error) {
         throw new Error(data.error);
@@ -40,7 +38,16 @@ const useSignup = () => {
       setLoading(false);
     }
   };
-  return { loading, signup };
+  return { loading, login };
 };
 
-export default useSignup;
+export default useLogin;
+
+function handleInputErrors(username, password) {
+  if (!username || !password) {
+    toast.error("Please fill in all fields");
+    return false;
+  }
+
+  return true;
+}
