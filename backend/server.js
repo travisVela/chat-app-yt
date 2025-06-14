@@ -7,12 +7,13 @@ import connectMongoDB from "./db/connectMongoDB.js";
 import authRoutes from "./routes/auth.routes.js";
 import messageRoutes from "./routes/message.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import { app, server } from "./socket/socket.js";
 
 // config
 dotenv.config();
 
 // variables
-const app = express();
+
 const PORT = process.env.PORT;
 
 // middle layer
@@ -26,7 +27,7 @@ app.use("/api/users", userRoutes);
 //   res.send("Hello World!!! hello again!");
 // });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   connectMongoDB();
   console.log("Server is running on port:", PORT);
 });
